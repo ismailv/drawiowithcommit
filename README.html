@@ -1,5 +1,6 @@
 <html>
 <title>Diagrams for GitHub</title>
+<link rel="shortcut icon" type="image/x-icon" href="./favicon.png" />
 <style>
 input, select {
   width: 100%;
@@ -212,6 +213,16 @@ div {
 			var ref = document.getElementById('ref').value;
 			var url = 'https://api.github.com/repos/' + org + '/' + repo +
 				'/contents/' + path + '?ref=' + encodeURIComponent(ref);
+				
+			var el = document.getElementById('commitselect');
+			console.log('el', encodeURIComponent(ref));
+			var strRef = el.options[el.selectedIndex].value;
+			
+			console.log( strRef);
+			if(strRef!='') {
+			url ='https://api.github.com/repos/' + org + '/' + repo +
+				'/contents/' + path + '?ref=' + encodeURIComponent(strRef);
+			}
 			
 			xhr('GET', url, null, function(req)
 			{
@@ -233,7 +244,7 @@ div {
 				    if (sentProcess=='p'){	
 					edit(path, obj.content, function(data, fn, iframe)
 					{
-					    var msg = prompt('Commit Message', 'Update ' + filename);					
+					    var msg = prompt('Commit Message', ' ');					
 					    writeFile(url, path, obj.sha, msg || '', data, fn);
 					 
 
@@ -342,6 +353,11 @@ div {
 		    console.log('value', strValue);
 		    document.getElementById('path').value = strValue;
 		}
+		
+		function setRef(index) {
+		
+			console.log('value of ref', 'tik');
+		}
 
 	</script>
 </head>
@@ -353,7 +369,7 @@ div {
 <tr><td>Organization:</td><td><input id="org" type="org"/></td></tr>
 <tr><td>Repository:</td><td><input id="repo" type="text"/></td></tr>
 <tr><td>Seçtiğin Dosya:</td><td><select id="reposelect" onchange="setPath(this.selectedIndex);"><option></option></select><button id="btnlist" onclick="getGitFiles();" style="margin-left:2.5rem;">Listele</button></td></tr>
-<tr><td>Commit Seçiniz:</td><td><select id="commitselect" "><option></option></select></td></tr>
+<tr><td>Commit Seçiniz:</td><td><select id="commitselect" onchange="setRef(this.selectedIndex);"><option></option></select></td></tr>
 
 <tr><td>Path:</td><td><input id="path"type="text" disabled/></td></tr>
 <tr><td>Ref:</td><td><input id="ref" type="text"/></td></tr>
@@ -363,6 +379,6 @@ div {
 </td></tr>
 </table>
 <br>
-AsyncWorks <a style="font-style:italic"> <span style="color:red; font-weight:bold"> &nbsp;Svg &hearts;</span> &nbsp;(Söz verdiğimiz gibi)</a>
+AsyncWorks <a style="font-style:italic"> <span style="color:red; font-weight:bold"> &nbsp;Svg &hearts; ile</span> &nbsp;(Söz verdiğimiz gibi)</a>
 </body>
 </html>
